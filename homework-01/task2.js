@@ -3,11 +3,16 @@ String.prototype.minus = function (other) {
   const num1 = Number(this);
   const num2 = Number(other);
 
+  if (num2 > num1) {
+    return "0";
+  }
   
-  const sum = num1 - num2;
- console.log('Sum:', sum);
+  const result = num1 - num2;
   
-  return String(sum);
+  console.log('Difference:', result);
+  
+  return String(result);
 };
-console.log("256".minus("99999999956"));
-console.log("1000000".minus("2222222222"));
+console.log("256".minus("56"));        
+console.log("1000".minus("1001"));     
+console.log("1000000".minus("222222")); 
