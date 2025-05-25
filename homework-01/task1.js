@@ -3,7 +3,6 @@ String.prototype.plus = function (other) {
   const num1 = Number(this);
   const num2 = Number(other);
 
-  
   const sum = num1 + num2;
  console.log('Sum:', sum);
   
