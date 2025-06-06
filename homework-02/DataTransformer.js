@@ -114,3 +114,21 @@ const DataTransformer = null;
     // } catch (e) {
     //     console.error(e.message);                  
     // }
+
+
+
+   function stringifyValue(value) {
+    if (typeof value === 'object' ) {
+        const myJSON = JSON.stringify(value);
+        return myJSON;
+    } else {
+        return String(value)
+   }
+};
+    console.log(stringifyValue({ name: "Ana" }));   
+    console.log(stringifyValue([1, 2, 3]));         
+    console.log(stringifyValue(42));                
+    console.log(stringifyValue(true));              
+    console.log(stringifyValue(null));
+    console.log(typeof(stringifyValue(null)));             
+    console.log(stringifyValue(undefined));         
