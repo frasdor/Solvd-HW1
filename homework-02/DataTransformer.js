@@ -1,41 +1,37 @@
-const DataTransformer = null;
-    function invertBoolean(value) { 
+const DataTransformer = {
+
+
+     invertBoolean(value) { 
         if (typeof value  !== 'boolean') {
             throw new Error ('Argument must be a boolean.');
         }
         return !value;
-    };
-        console.log(invertBoolean(true));
-       try {
-         console.log(invertBoolean("true"));
-       } catch (error) {
-        console.error(error.message);
-       }
+    },
+       
 
-    function addValues (a,b) {
+     addValues (a,b) {
         if (typeof a === 'number' && typeof b === 'number') {
             const sum = a + b;
             return sum;
-        } else {
-            throw new Error ('Addition is not possible')
         }
-    };
-        console.log(addValues(2, 3));            
-        console.log(addValues(3.5, 2.1));  
-        try {
-            console.log(addValues("2", 3));   
-        } catch (error) {
-            console.error(error.message);       
+        if (typeof a === 'string' || typeof b ==='string') {
+            const con = String(a) + String(b);
+            return con;
         }
-
-        try {
-            console.log(addValues(2, null)); 
-        } catch (error) {
-            console.error(error.message);
-        };
+        if (Array.isArray(a) && Array.isArray(b)) {
+            const concat = a.concat(b);
+            return concat;
+        }
+        if (typeof a === 'object' && typeof b === 'object' && a && b) {
+            const conbined = { ...a, ...b };
+            return conbined;
+        }
+        throw new Error ('Addition is not possible')
+        
+    },
     
     
-    function convertToNumber (value) {
+     convertToNumber (value) {
         if (typeof value === 'string'){
             const num = value.includes('.') ? parseFloat(value) : parseInt(value);
             if (isNaN(num)) {
@@ -54,81 +50,52 @@ const DataTransformer = null;
         } 
         return num;
 
-    }; 
+    },
     
-    // console.log(convertToNumber("42"));      
-    // console.log(convertToNumber("3.14"));    
-    // console.log(convertToNumber(10));        
-    // console.log(convertToNumber(true));      
-     
-    // console.log(convertToNumber(null));      
 
-    // try {
-    //     console.log(convertToNumber("abc")); 
-    // } catch (error) {
-    //     console.error(error.message);           
-    // }
-
-    // try {
-    //     console.log(convertToNumber(undefined)); 
-    // } catch (e) {
-    //     console.error(error.message);               
-    // }
-
-
-    function coerceToType ( value, type) {
-        if (typeof type === 'number'){
-        const result = Number(value); 
-
-        if(isNaN(result)) {
-            throw new Error('Cannot convert to number');
-        }
-        return result;
+     coerceToType ( value, type) {
+        if (type === 'number'){
+            const result = Number(value); 
+            if(isNaN(result)) {
+                throw new Error('Cannot convert to number');
+            }
+            return result;
         };
 
-        if (typeof type === 'string') {
+        if ( type === 'string') {
             return String(value);
         };
               
-        if(typeof type === 'boolean') {
+        if( type === 'boolean') {
             return Boolean(value);
         }
 
         throw new Error('Unsupported type')
-    };
+    },
 
-    // console.log(coerceToType("123", "number"));   
-    // console.log(coerceToType("abc", "string"));    
-    // console.log(coerceToType(1, "boolean"));       
-    // console.log(coerceToType(0, "boolean"));       
-    // console.log(coerceToType(false, "string"));   
-
-    // try {
-    //     console.log(coerceToType("abc", "number")); 
-    // } catch (e) {
-    //     console.error(e.message);                 
-    // }
-
-    // try {
-    //     console.log(coerceToType("123", "float"));  
-    // } catch (e) {
-    //     console.error(e.message);                  
-    // }
-
-
-
-   function stringifyValue(value) {
-    if (typeof value === 'object' ) {
-        const myJSON = JSON.stringify(value);
-        return myJSON;
-    } else {
-        return String(value)
-   }
+    stringifyValue(value) {
+        if (typeof value === 'object' && value !== null ) {
+            const myJSON = JSON.stringify(value);
+            return myJSON;
+        } else {
+            return String(value);
+        }
+    }
 };
-    console.log(stringifyValue({ name: "Ana" }));   
-    console.log(stringifyValue([1, 2, 3]));         
-    console.log(stringifyValue(42));                
-    console.log(stringifyValue(true));              
-    console.log(stringifyValue(null));
-    console.log(typeof(stringifyValue(null)));             
-    console.log(stringifyValue(undefined));         
+console.log(DataTransformer.invertBoolean(true));            
+console.log(DataTransformer.addValues(10, 5));               
+console.log(DataTransformer.addValues("Hello, ", "world!")); 
+console.log(DataTransformer.addValues([1, 2], [3, 4]));      
+console.log(DataTransformer.addValues({a:1}, {b:2}));        
+
+console.log(DataTransformer.convertToNumber("123.45"));      
+console.log(DataTransformer.convertToNumber(true));          
+
+console.log(DataTransformer.coerceToType("100", "number"));  
+console.log(DataTransformer.coerceToType(0, "boolean"));     
+console.log(DataTransformer.coerceToType(123, "string"));    
+
+console.log(DataTransformer.stringifyValue({x: 1, y: 2}));   
+console.log(DataTransformer.stringifyValue(42));             
+
+           
