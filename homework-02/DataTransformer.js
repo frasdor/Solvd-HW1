@@ -1,14 +1,12 @@
-const DataTransformer = {
-
+class DataTransformer  {
 
      invertBoolean(value) { 
         if (typeof value  !== 'boolean') {
             throw new Error ('Argument must be a boolean.');
         }
         return !value;
-    },
+    }
        
-
      addValues (a,b) {
         if (typeof a === 'number' && typeof b === 'number') {
             const sum = a + b;
@@ -23,13 +21,11 @@ const DataTransformer = {
             return concat;
         }
         if (typeof a === 'object' && typeof b === 'object' && a && b) {
-            const conbined = { ...a, ...b };
-            return conbined;
+            const combined = { ...a, ...b };
+            return combined;
         }
-        throw new Error ('Addition is not possible')
-        
-    },
-    
+        throw new Error ('Addition is not possible');   
+    }
     
      convertToNumber (value) {
         if (typeof value === 'string'){
@@ -49,29 +45,22 @@ const DataTransformer = {
             throw new Error('Conversion is not possible');
         } 
         return num;
-
-    },
+    }
     
 
      coerceToType ( value, type) {
-        if (type === 'number'){
-            const result = Number(value); 
-            if(isNaN(result)) {
-                throw new Error('Cannot convert to number');
-            }
-            return result;
-        };
+        switch (type) {
+            case 'number':
+                return this.convertToNumber(value);
 
-        if ( type === 'string') {
-            return String(value);
-        };
-              
-        if( type === 'boolean') {
-            return Boolean(value);
+            case 'string':
+                return String(value);
+            case 'boolean':
+                return Boolean(value);
+            default:
+                throw new Error('Unsupported type');
         }
-
-        throw new Error('Unsupported type')
-    },
+    }
 
     stringifyValue(value) {
         if (typeof value === 'object' && value !== null ) {
@@ -81,21 +70,23 @@ const DataTransformer = {
             return String(value);
         }
     }
-};
-console.log(DataTransformer.invertBoolean(true));            
-console.log(DataTransformer.addValues(10, 5));               
-console.log(DataTransformer.addValues("Hello, ", "world!")); 
-console.log(DataTransformer.addValues([1, 2], [3, 4]));      
-console.log(DataTransformer.addValues({a:1}, {b:2}));        
+}
+const dt = new DataTransformer();
+    
+console.log(dt.invertBoolean(true));            
+console.log(dt.addValues(10, 5));               
+console.log(dt.addValues("Hello, ", "world!")); 
+console.log(dt.addValues([1, 2], [3, 4]));      
+console.log(dt.addValues({a:1}, {b:2}));        
 
-console.log(DataTransformer.convertToNumber("123.45"));      
-console.log(DataTransformer.convertToNumber(true));          
+console.log(dt.convertToNumber("123.45"));      
+console.log(dt.convertToNumber(true));          
 
-console.log(DataTransformer.coerceToType("100", "number"));  
-console.log(DataTransformer.coerceToType(0, "boolean"));     
-console.log(DataTransformer.coerceToType(123, "string"));    
+console.log(dt.coerceToType("100", "number"));  
+console.log(dt.coerceToType(0, "boolean"));     
+console.log(dt.coerceToType(123, "string"));    
 
-console.log(DataTransformer.stringifyValue({x: 1, y: 2}));   
-console.log(DataTransformer.stringifyValue(42));             
+console.log(dt.stringifyValue({x: 1, y: 2}));   
+console.log(dt.stringifyValue(42));             
 
            
