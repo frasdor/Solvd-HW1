@@ -21,13 +21,18 @@ function filterUniqueWords(text) {
 }
 
 function getAverageGrade(students) {
-    const note = students.map(student => student.grades);
-    const allNotes = note.flat();
-    const sum = allNotes.reduce((acc, grade) => acc + grade, 0);
-    const average = sum / allNotes.length;
+    return students.map(student => {
+        const sum = student.grades.reduce((acc, grade) => acc + grade, 0);
+        const average = sum / student.grades.length;
 
-    return average;
+        return {
+            name: student.name,
+            average: average
+        };
+    });
 }
+
+
 console.log(getFullName(user));
 console.log(filterUniqueWords('It is a simple test. This test is only a test'));
 console.log(getAverageGrade(students));
