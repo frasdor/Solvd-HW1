@@ -42,7 +42,7 @@ function fibonacciGenerator (){
             const nextValue = n1 + n2;
             n1 = n2;
             n2 = nextValue;
-            return value;
+            return { value, done: false };
         }
     };
 }
