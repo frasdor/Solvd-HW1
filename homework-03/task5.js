@@ -30,3 +30,25 @@ console.log(lazy.next());
 console.log(lazy.next());
 console.log(lazy.next());
 console.log(lazy.next());
+
+
+function fibonacciGenerator (){
+    let n1 = 0;
+    let n2 = 1;
+    
+    return {
+        next: function () {
+            const value = n1;
+            const nextValue = n1 + n2;
+            n1 = n2;
+            n2 = nextValue;
+            return value;
+        }
+    };
+}
+
+const fibG = fibonacciGenerator();
+console.log(fibG.next());
+console.log(fibG.next());
+console.log(fibG.next());
+console.log(fibG.next());
