@@ -1,17 +1,33 @@
-function calculateFactorial(n, acc = 1) {
-    if (n === 0) {
-        return acc;
-    } else {
-        return calculateFactorial (n - 1, n * acc);
-    }
-}
-console.log(calculateFactorial(5));
+class MathOperations {
+    calculateFactorial(n, acc = 1) {
+        if (typeof n !== 'number' || n < 0 || !Number.isInteger(n)) {
+            throw new Error('Factorial input must be a non-negative integer');
+        }
 
-function power(base, exponent) {
+        if (n === 0) {
+            return acc;
+        } else {
+            return this.calculateFactorial (n - 1, n * acc);
+        }
+    }
+ 
+ power(base, exponent) {
+    if (typeof base !== 'number') {
+      throw new Error('Base must be a number');
+    }
+    if (typeof exponent !== 'number' || !Number.isInteger(exponent)) {
+      throw new Error('Exponent must be an integer');
+    }
+
     if (exponent === 0) {
         return 1;
     } else {
-        return base * power (base, exponent -1);
+        return base * this.power (base, exponent -1);
     }
 }
-console.log(power(2,3));
+
+}
+
+const math = new MathOperations();
+console.log(math.calculateFactorial(6));
+console.log(math.power(2,3));
