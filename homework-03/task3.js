@@ -1,13 +1,20 @@
-function createCounter(){
-    let count = 0;
-    return function() {
-        count++;
-        return count;
-    };
-}
+class CounterRepeater{
+    constructor() {
+        this.count = 0;
+    }
 
-function repeatFunction (fn, times) {
-    return function() {
+    createCounter() {
+            this.count++;
+            return this.count;
+        }
+    repeatFunction (fn, times) {
+        if (typeof fn !== 'function') {
+            throw new Error('Parameter fn must be a function');
+        }
+         if (typeof times !== 'number' || !Number.isInteger(times)) {
+        throw new Error('Parameter times must be an integer');
+        }
+
         if (times < 0) {
             const intervalId = setInterval (fn, 10);
             return () => clearInterval(intervalId);
@@ -17,11 +24,11 @@ function repeatFunction (fn, times) {
             }
             return null;
         }
-    };
+    }
+    
 }
 
+ const myCounterRepeater = new CounterRepeater();
+ const counterFn = () => console.log(myCounterRepeater.createCounter());
+ myCounterRepeater.repeatFunction(counterFn, 5);
 
-const counter = createCounter();
-
-const repeatCount = repeatFunction(() => console.log(counter()), 5);
-repeatCount();
