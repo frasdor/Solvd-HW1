@@ -1,53 +1,68 @@
+class DataFormatter {
+    constructor() {
+    }
+
+    formatDate(date) {
+        if (!(date instanceof Date)) {
+      throw new Error('Input must be a Date object');
+    }
+        return date.toDateString(); 
+    }
+}
+
+class LazyMapper {
+    constructor(array,mapFn) {
+       if (!Array.isArray(array)) {
+      throw new Error('First argument must be an array');
+    }
+    if (typeof mapFn !== 'function') {
+      throw new Error('Second argument must be a function');
+    }
+    this.array = array;
+    this.mapFn = mapFn;
+    this.index = 0;
+}
+    
+ lazyMap(){
+    if (this.index < this.array.length) {
+          const value = this.mapFn(this.array[this.index]);
+                this.index++;
+                return {value, done: false };
+            } else {
+                return { value: undefined, done: true };
+            }      
+        }     
+    };
+
 const dates = [
   new Date(2025, 5, 17), 
   new Date(2025, 5, 18), 
   new Date(2025, 5, 19)  
 ];
+const formatter = new DataFormatter();
+const mapper = new LazyMapper(dates, date => formatter.formatDate(date));
 
-function formatDate(date) {
-  return date.toDateString(); 
-}
-
-function lazyMap(array, mapFn){
-    let index = 0;
-
-    return {
-        next: function () {
-            if (index < array.length) {
-                const value = mapFn(array[index]);
-                index++;
-                return {value, done: false };
-            } else {
-                return { value: undefined, done: true };
-            }
-        }
-    };
-}
-
-const lazy = lazyMap(dates, formatDate);
-
-console.log(lazy.next());
-console.log(lazy.next());
-console.log(lazy.next());
-console.log(lazy.next());
+console.log(mapper.lazyMap());
+console.log(mapper.lazyMap());
+console.log(mapper.lazyMap());
+console.log(mapper.lazyMap());
 
 
-function fibonacciGenerator (){
-    let n1 = 0;
-    let n2 = 1;
-    
-    return {
-        next: function () {
-            const value = n1;
-            const nextValue = n1 + n2;
-            n1 = n2;
-            n2 = nextValue;
+class FibonacciGenerator {
+    constructor(){
+    this.n1 = 0;
+    this.n2 = 1;
+    }
+     next() {
+            const value = this.n1;
+            const nextValue = this.n1 + this.n2;
+            this.n1 = this.n2;
+            this.n2 = nextValue;
             return { value, done: false };
         }
-    };
 }
 
-const fibG = fibonacciGenerator();
+const fibG = new FibonacciGenerator();
 console.log(fibG.next());
 console.log(fibG.next());
 console.log(fibG.next());
