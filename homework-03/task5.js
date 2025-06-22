@@ -12,40 +12,27 @@ class DataFormatter {
 
 class LazyMapper {
     constructor(array,mapFn) {
-       if (!Array.isArray(array)) {
-      throw new Error('First argument must be an array');
+        if (!Array.isArray(array)) {
+        throw new Error('First argument must be an array');
+        }
+        if (typeof mapFn !== 'function') {
+        throw new Error('Second argument must be a function');
+        }
+        this.array = array;
+        this.mapFn = mapFn;
+        this.index = 0;
     }
-    if (typeof mapFn !== 'function') {
-      throw new Error('Second argument must be a function');
-    }
-    this.array = array;
-    this.mapFn = mapFn;
-    this.index = 0;
-}
     
- lazyMap(){
-    if (this.index < this.array.length) {
-          const value = this.mapFn(this.array[this.index]);
-                this.index++;
-                return {value, done: false };
-            } else {
-                return { value: undefined, done: true };
-            }      
-        }     
-    };
-
-const dates = [
-  new Date(2025, 5, 17), 
-  new Date(2025, 5, 18), 
-  new Date(2025, 5, 19)  
-];
-const formatter = new DataFormatter();
-const mapper = new LazyMapper(dates, date => formatter.formatDate(date));
-
-console.log(mapper.lazyMap());
-console.log(mapper.lazyMap());
-console.log(mapper.lazyMap());
-console.log(mapper.lazyMap());
+    lazyMap(){
+         if (this.index < this.array.length) {
+            const value = this.mapFn(this.array[this.index]);
+                    this.index++;
+                    return {value, done: false };
+                } else {
+                    return { value: undefined, done: true };
+                }      
+    }     
+ }
 
 
 class FibonacciGenerator {
@@ -61,6 +48,19 @@ class FibonacciGenerator {
             return { value, done: false };
         }
 }
+const dates = [
+  new Date(2025, 5, 17), 
+  new Date(2025, 5, 18), 
+  new Date(2025, 5, 19)  
+];
+const formatter = new DataFormatter();
+const mapper = new LazyMapper(dates, date => formatter.formatDate(date));
+
+console.log(mapper.lazyMap());
+console.log(mapper.lazyMap());
+console.log(mapper.lazyMap());
+console.log(mapper.lazyMap());
+
 
 const fibG = new FibonacciGenerator();
 console.log(fibG.next());
