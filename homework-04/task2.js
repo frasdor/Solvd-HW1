@@ -1,53 +1,65 @@
-const product = {
-    name: "Laptop",
-    price: 1000,
-    quantity: 5
-};
+class Product {
+    constructor(name, price, quantity){
+        if (typeof price !== 'number' || price <=0){
+            throw new Error ('Price must be a positive number.');
+        }
+        if (typeof quantity !== 'number' || quantity < 0){
+            throw new Error ('Quantity must be a non-negative number.')
+        }
 
-    Object.defineProperty( product, 'price', {
-        writable: false,
-        enumerable: false,
-        configurable: true
-    });
-     Object.defineProperty( product, 'quantity', {
-        writable: false,
-        enumerable: false,
-        configurable: true
-    });
+        this.name = name;
 
-function getTotalPrice(obj){
-    const priceDescriptor = Object.getOwnPropertyDescriptor(obj, 'price');
-    const quantityDescriptor = Object.getOwnPropertyDescriptor(obj, 'quantity');
+        Object.defineProperty( this, 'price', {
+            value: price,
+            writable: false,
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty( this, 'quantity', {
+                value: quantity,
+                writable: false,
+                enumerable: false,
+                configurable: true
+        });
+    } 
+    getTotalPrice(){
+        const priceDescriptor = Object.getOwnPropertyDescriptor(this, 'price');
+        const quantityDescriptor = Object.getOwnPropertyDescriptor(this, 'quantity');
 
-    if (priceDescriptor && quantityDescriptor) {
-        const price = priceDescriptor.value;
-        const quantity = quantityDescriptor.value;
-        return price * quantity;
-    } else {
-        throw new Error('Cannot read properties "price" or "quantity"'); 
+        if (priceDescriptor && quantityDescriptor) {
+            const price = priceDescriptor.value;
+            const quantity = quantityDescriptor.value;
+            return price * quantity;
+        } else {
+            throw new Error('Cannot read properties "price" or "quantity"'); 
+        }
+    }
+
+    deleteNonConfigurable(prop) {
+        const descriptor = Object.getOwnPropertyDescriptor(this, prop);
+
+        if(!descriptor) {
+            console.log(`The property '${prop}' does not exist.`);
+            return;
+        }
+        if(!descriptor.configurable) {
+            throw new Error (`Cannot delete the property '${prop}' because it is non_configurable.`);
+        }
+
+        delete this[prop];
+        console.log(`The property "${prop}" has been deleted.`);
     }
 }
 
-function deleteNonConfigurable(obj, prop) {
-    const descriptor = Object.getOwnPropertyDescriptor(obj, prop);
+const product = new Product("Laptop", 1000, 5);
 
-    if(!descriptor) {
-        console.log(`The property '${prop}' does not exist.`);
-        return;
-    }
-    if(!descriptor.configurable) {
-        throw new Error (`Cannot delete the property '${prop}' because it is non_configurable.`);
-    }
+console.log(product.getTotalPrice());  
 
-    delete obj[prop];
-    console.log(`The property "${prop}" has been deleted.`);
-}
-    
-console.log(getTotalPrice(product));
-deleteNonConfigurable(product, 'quantity');
-console.log(product);
-if (Object.getOwnPropertyDescriptor(product, 'quantity')) {
-    console.log(getTotalPrice(product));
-} else {
-    console.log('Cannot calculate total price - missing "quantity" property');
+product.deleteNonConfigurable('quantity');   
+console.log(product);               
+
+try {
+    console.log(product.getTotalPrice());  
+} catch (e) {
+    console.log(e.message);              
 }
