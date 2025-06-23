@@ -3,32 +3,32 @@ class Person {
         Object.defineProperty(this, 'firstName',{
             value: firstName,
             writable: false,
-            configurablele: false,
+            configurable: false,
             enumerable: true
         });
          Object.defineProperty(this, 'lastName',{
             value: lastName,
             writable: false,
-            configurablele: false,
+            configurable: false,
             enumerable: true
         });
          Object.defineProperty(this, 'age',{
             value: age,
             writable: false,
-            configurablele: false,
+            configurable: false,
             enumerable: true
         });
          Object.defineProperty(this, 'email',{
             value: email,
             writable: false,
-            configurablele: false,
+            configurable: false,
             enumerable: true
         });
 
         Object.defineProperty(this, 'address',{
             value: address,
             writable: true,
-            configurablele: false,
+            configurable: false,
             enumerable: false
         });
     }
